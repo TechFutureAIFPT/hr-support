@@ -1,0 +1,5 @@
+{
+  "name": "TechCV AI Candidate Screener",
+  "description": "An intelligent CV screening application that uses AI to score and rank candidates based on a job description and customizable criteria. It features a multi-step process for inputting JDs, setting weights, uploading CVs, and analyzing results with Gemini.",
+  "requestFramePermissions": []
+}

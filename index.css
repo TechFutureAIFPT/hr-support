@@ -1,0 +1,300 @@
+:root {
+  --bg: #0B1220;
+  --card: rgba(255, 255, 255, 0.06);
+  --card-stroke: rgba(255, 255, 255, 0.12);
+  --txt: #E6EAF2;
+  --muted: #98A2B3;
+  --primary: #6EE7F5; /* cyan */
+  --accent: #A78BFA; /* violet */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--txt);
+  min-height: 100vh;
+}
+.ai-aurora {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(60% 60% at 20% 10%, rgba(110, 231, 245, 0.25), transparent 60%),
+              radial-gradient(50% 50% at 80% 30%, rgba(167, 139, 250, 0.2), transparent 60%),
+              radial-gradient(70% 70% at 50% 90%, rgba(59, 130, 246, 0.18), transparent 60%);
+  filter: blur(60px) saturate(120%);
+  opacity: 0.35;
+  z-index: -1;
+}
+.grid-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 20%, transparent 80%);
+  opacity: 0.5;
+  z-index: -1;
+}
+@keyframes shimmer {
+  0% { background-position: -100% 50%; }
+  100% { background-position: 200% 50%; }
+}
+.animate-shimmer {
+  animation: shimmer 2s cubic-bezier(0.4, 0, 0.6, 1) 1;
+  background-size: 200% 100%;
+}
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease-in-out;
+}
+.btn-glow:hover::before {
+  left: 150%;
+}
+.pulse-animation {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Smooth scrolling optimizations */
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Performance optimizations for scrolling */
+.results-container {
+  will-change: scroll-position;
+  contain: layout style paint;
+}
+
+.table-row {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+.expanded-content {
+  will-change: auto;
+  contain: layout style paint;
+}
+
+/* === Custom UI Layout Enhancements (non-breaking additions) === */
+/* Two-column layout: desktop 40/60, mobile single col */
+.layout-2col {
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 24px;
+  align-items: start;
+  width: 100%;
+  margin: 0 auto;
+}
+@media (max-width: 1024px) {
+  .layout-2col {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* New weighted layout with internal vertical divider (40% / divider / 60%) */
+/* Updated: 3:7 primary ratio with dedicated divider track */
+.weights-layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3fr 2px 7fr; /* 3:7 layout with a 2px divider */
+  column-gap: 32px; /* tightened for new proportions */
+  align-items: start;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 4px; /* subtle horizontal breathing */
+  transition: grid-template-columns .25s ease;
+}
+
+/* 992px–1199px: approximate 4:8 (still keeping divider track) */
+@media (max-width: 1199px) and (min-width: 992px) {
+  .weights-layout {
+    grid-template-columns: 4fr 2px 8fr;
+  }
+}
+
+/* Stack below 992px */
+@media (max-width: 991px) {
+  .weights-layout {
+    grid-template-columns: 1fr; /* single column */
+    column-gap: 0;
+    row-gap: 32px;
+  }
+  .weights-layout .layout-divider { display: none; }
+}
+
+/* Actual divider element styled as vertical bar */
+.weights-layout .layout-divider {
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border-radius: 1px;
+  align-self: stretch;
+  min-height: 100%;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 0 6px -1px rgba(255,255,255,0.15) inset;
+}
+
+/* Column semantic helpers (optional styling hooks) */
+.weights-layout .filters-col { /* left column */
+  position: relative;
+  background: linear-gradient(145deg, rgba(30,41,59,0.65), rgba(15,23,42,0.55));
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 14px;
+  padding: 18px 18px 26px;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+}
+.weights-layout .weights-col { /* right column */
+  position: relative;
+  background: linear-gradient(145deg, rgba(17,24,39,0.75), rgba(11,18,30,0.65));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 8px 4px 4px;
+  backdrop-filter: blur(6px);
+}
+
+/* Ensure internal cards inside new column surfaces don't duplicate heavy borders */
+.weights-layout .filters-col .card,
+.weights-layout .weights-col .card {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: none;
+}
+
+/* Responsive: stack and hide divider under 900px */
+@media (max-width: 900px) {
+  .weights-layout {
+    grid-template-columns: 1fr; /* single column */
+    column-gap: 0;
+    row-gap: 28px;
+  }
+  .weights-layout .layout-divider { display: none; }
+}
+
+/* Card container */
+.card {
+  background: #111827; /* fallback dark */
+  background: linear-gradient(145deg, #111827 0%, #0E1624 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 14px -2px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04) inset;
+  position: relative;
+}
+.card--flush { padding: 0; }
+
+/* Unified form field stack */
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field + .field { margin-top: 14px; }
+
+/* Control height normalization */
+.hf-control, .field select, .field input[type="text"], .field input[type="number"], .field input[type="range"] {
+  min-height: 40px;
+  height: 40px;   
+  line-height: 40px;
+  border-radius: 8px;
+}
+
+/* Progress bars */
+.progress { position: relative; width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+.progress--thin { height: 6px; }
+.progress__bar { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #6366f1, #3b82f6 40%, #8b5cf6); transition: width 0.4s cubic-bezier(.4,0,.2,1); }
+
+/* Toolbar actions */
+.toolbar { display: flex; justify-content: flex-end; gap: 12px; align-items: center; }
+
+/* Button subtle elevation */
+.btn-elevate { box-shadow: 0 4px 16px -4px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05) inset; transition: box-shadow 180ms ease, transform 180ms ease; }
+.btn-elevate:hover { box-shadow: 0 6px 20px -2px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.08) inset; }
+.btn-elevate:active { transform: translateY(1px); }
+
+/* Total weight footer center alignment helper */
+.total-weight-footer { display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; }
+@media (min-width: 640px) {
+  .total-weight-footer { flex-direction: row; justify-content: space-between; align-items: center; }
+}
+
+/* Soft focus ring utility */
+.focus-soft:focus { outline: 2px solid rgba(99,102,241,0.4); outline-offset: 2px; }
+
+/* Smooth transitions */
+.transition-base { transition: all 160ms cubic-bezier(.4,0,.2,1); }
+
+/* Weight tile refined progress (override existing height when class applied) */
+.weight-tile .progress-inline { height: 8px; }
+
+/* Prevent layout shift on range focus */
+input[type=range] { background-clip: padding-box; }
+
+/* Evidence highlight tokens */
+.evidence-block .evidence-hl { position: relative; font-weight: 500; }
+.evidence-block .hl-0 { background: linear-gradient(90deg, rgba(56,189,248,0.15), rgba(59,130,246,0.15)); color: #7dd3fc; padding: 1px 3px; border-radius: 4px; }
+.evidence-block .hl-1 { background: linear-gradient(90deg, rgba(245,158,11,0.18), rgba(234,179,8,0.18)); color: #fbbf24; padding: 1px 3px; border-radius: 4px; }
+.evidence-block .hl-2 { background: linear-gradient(90deg, rgba(167,139,250,0.18), rgba(139,92,246,0.18)); color: #c4b5fd; padding: 1px 3px; border-radius: 4px; }
+
+/* Compact progress styling used in analysis detail */
+.crit-progress { height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+.crit-progress > span { display: block; height: 100%; background: linear-gradient(90deg,#10b981,#059669); }
+
+/* Keyword pill status styles (experience quick analysis) */
+.pill { display:inline-block; padding:2px 8px; border-radius:999px; font-size:10px; font-weight:500; line-height:1.2; letter-spacing:.3px; border:1px solid transparent; }
+.pill--match { background:rgba(16,185,129,0.18); color:#34d399; border-color:rgba(16,185,129,0.4); }
+.pill--missing { background:rgba(234,179,8,0.18); color:#fbbf24; border-color:rgba(234,179,8,0.4); }
+.pill--uncertain { background:rgba(100,116,139,0.25); color:#cbd5e1; border-color:rgba(100,116,139,0.35); }
